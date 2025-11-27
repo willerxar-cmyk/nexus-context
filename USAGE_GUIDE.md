@@ -1,97 +1,131 @@
-# Guia de Uso e Configuração: MCP-Nexus-Context
+# Guia Avançado: mcp-nexus-context
 
-Este documento explica como instalar, configurar e instruir Agentes de IA para utilizar o **MCP-Nexus-Context**, seu banco de dados vetorial local acelerado por GPU/CPU.
+## 📍 Configuração por IDE
 
-## 1. Instalação e Execução
-
-Certifique-se de ter compilado o projeto em modo release:
-```powershell
-cargo build --release
-```
-O executável será gerado em: `target/release/mcp-nexus-context.exe` (Windows) ou `mcp-nexus-context` (Linux/Mac).
-
-## 2. Configuração no Cliente MCP (IDE)
-
-Adicione uma das seguintes configurações ao seu arquivo de settings do MCP (geralmente `mcp_config.json`):
-
-### Opção A: Binário Compilado (Recomendado)
-Substitua `c:/Caminho/Para/...` pelo caminho completo onde o projeto foi clonado.
-
-```json
-{
-  "mcpServers": {
-    "mcp-nexus-context": {
-      "command": "c:/Users/admin/Documents/MPC-ContextExpander/target/release/mcp-nexus-context.exe",
-      "args": [],
-      "env": {
-        "RUST_LOG": "info",
-        "HF_ENDPOINT": "https://huggingface.co"
-      },
-      "disabled": false,
-      "autoApprove": ["search_context", "add_memory"]
-    }
-  }
-}
-```
-
-### Opção B: Rodar via Cargo (Cross-Platform)
-Ideal para desenvolvimento ou se você usa Linux/Mac e não quer gerenciar o binário manualmente.
+### Windsurf
+Edite `~/.windsurf/mcp_config.json`:
 ```json
 {
   "mcpServers": {
     "mcp-nexus-context": {
       "command": "cargo",
-      "args": ["run", "--release", "--"],
-      "cwd": "/caminho/absoluto/para/mcp-nexus-context",
-      "env": {
-        "RUST_LOG": "info",
-        "HF_ENDPOINT": "https://huggingface.co"
-      },
-      "disabled": false,
-      "autoApprove": ["search_context", "add_memory"]
+      "args": ["run", "--release"],
+      "cwd": "/absolute/path/to/mcp-nexus-context"
     }
   }
 }
 ```
-*Nota: Ajuste o caminho absoluto (`c:/Users/...`) se necessário.*
 
-## 3. Instruções para o Agente (System Prompt)
+### Cursor
+Edite `~/.cursor/mcp_config.json` (mesmo formato acima).
 
-Para garantir que o Agente (Cascade, Claude, GPT-4) utilize o Nexus-Context de forma proativa, adicione o seguinte bloco ao **Custom Instructions** ou **System Prompt** do seu editor:
+### Claude Desktop
+Edite `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) ou `%APPDATA%\Claude\config.json` (Windows).
+
+---
+
+## 🤖 System Prompt Completo
+
+Adicione isso às **Custom Instructions** do seu agente:
 
 ```markdown
-# NEXUS-CONTEXT PROTOCOL
-You have access to a powerful local vector database tool called 'nexus-context'.
-This tool is your long-term memory and knowledge base.
+# MEMORY PROTOCOL
+You have access to 'mcp-nexus-context', a local vector memory tool with infinite context.
 
-## WHEN TO USE
-1. **Retrieval:** Before answering complex questions about the codebase history, architecture decisions, or previous discussions, ALWAYS call `search_context(query)`.
-   - Query Examples: "architecture patterns used in module X", "why did we use Rust instead of Python?", "previous bugs in authentication".
-   
-2. **Memory Storage:** When the user provides crucial information, architectural decisions, or specifically asks you to "remember this", YOU MUST call `add_memory(text, metadata)`.
-   - Example: `add_memory("User prefers functional programming style in Rust", "{\"type\": \"preference\"}")`
-   - Example: `add_memory("The API endpoint /v1/auth was deprecated in v2.0", "{\"tag\": \"api_change\"}")`
+## USAGE RULES
+1. **Search First:** Before answering questions about past work, architecture, or decisions, ALWAYS call `search_context(query)`.
+2. **Save Important Info:** When the user shares crucial information, architectural decisions, or asks you to "remember this", YOU MUST call `add_memory(text, metadata)`.
 
-## BEHAVIOR RULES
-- **Proactive Search:** Do not wait for the user to tell you to search. If a query is ambiguous or refers to past context, search first.
-- **Self-Correction:** If you search and find conflicting info, present the findings to the user to resolve the conflict.
-- **Context Awareness:** Use the retrieved context to ground your code generation and explanations.
+## EXAMPLES
+- Query: "What was our decision on authentication?"
+  Action: `search_context("authentication decision")`
+
+- User: "Remember that we use PostgreSQL for production."
+  Action: `add_memory("Production database: PostgreSQL", "{\"type\": \"infrastructure\"}")`
+
+## BEHAVIOR
+- Be proactive: Search without being asked if context might help.
+- Be honest: If you find conflicting info, present both and ask for clarification.
+- Ground answers: Always cite retrieved context when available.
 ```
 
-## 4. Testando a Integração
+---
 
-1. **Reinicie seu IDE/Cliente MCP** para carregar a nova configuração.
-2. **Abra o Chat** e digite:
-   > "Salve na memória que este projeto usa arquitetura Hexagonal."
-3. O agente deve responder confirmando o uso da ferramenta `add_memory`.
-4. Em seguida, pergunte:
-   > "Qual arquitetura estamos usando?"
-5. O agente deve chamar `search_context`, encontrar a informação ("Hexagonal") e responder corretamente.
+## 🧪 Teste de Validação
 
-## 5. Solução de Problemas
+```bash
+# 1. Inicie o servidor manualmente
+cargo run --release
 
-*   **Erro "Model files not found":**
-    Execute o script de download novamente na pasta do projeto:
-    `python download_model.py`
-*   **Erro de DLL/GPU:**
-    O projeto está configurado para usar CPU por padrão para compatibilidade máxima. Se quiser usar GPU (Nvidia), edite o `Cargo.toml` para habilitar a feature `cuda` e recompile, garantindo que o CUDA Toolkit v12+ esteja instalado.
+# 2. Em outra janela, rode o teste
+python test_mcp_client.py
+```
+
+**Saída esperada:**
+```
+✓ Initialize: OK
+✓ Add Memory: "O projeto usa Rust"
+✓ Search: Found 1 result (score: 0.80+)
+```
+
+---
+
+## 🔧 Troubleshooting
+
+### Erro: "Model files not found"
+```bash
+python download_model.py
+```
+
+### Servidor não responde
+- Verifique se o caminho no `mcp_config.json` está correto
+- Teste manualmente: `cargo run --release`
+- Veja logs: `RUST_LOG=debug cargo run --release`
+
+### Busca não retorna resultados
+- O banco está vazio? Use `add_memory` primeiro
+- Verifique `data/vectors.json` (deve existir e ter conteúdo)
+
+### Performance lenta
+- Use o binário compilado (`cargo build --release`) em vez de `cargo run`
+- CPU lenta? Considere habilitar GPU (requer CUDA Toolkit)
+
+---
+
+## 🎯 Boas Práticas
+
+1. **Metadados Estruturados:** Use JSON válido em `metadata`:
+   ```json
+   {"type": "architecture", "module": "auth", "date": "2025-11-27"}
+   ```
+
+2. **Queries Descritivas:** Seja específico:
+   - ✅ "decisão sobre usar Postgres em vez de MySQL"
+   - ❌ "banco de dados"
+
+3. **Backup Regular:** `data/vectors.json` contém toda a memória. Faça backup!
+
+---
+
+## 📊 Estrutura de Dados
+
+**Vector Store (`data/vectors.json`):**
+```json
+[
+  {
+    "id": "manual_id",
+    "text": "O projeto usa arquitetura Hexagonal",
+    "vector": [0.123, -0.456, ...],
+    "metadata": "{\"type\": \"architecture\"}"
+  }
+]
+```
+
+**Model Cache (`data/models/bge-base-en-v1.5/`):**
+- `config.json` - Configuração do modelo BERT
+- `model.safetensors` - Pesos do modelo (~438MB)
+- `tokenizer.json` - Tokenizador
+
+---
+
+*Para configuração básica, veja o [README.md](README.md)*

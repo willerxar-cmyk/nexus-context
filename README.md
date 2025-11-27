@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# 🧠 MCP-Nexus-Context
-=======
-# 🧠 mcp-nexus-context MCP
->>>>>>> f30aa6ee78c783e17670f9ee342dfd137c0f89c0
+# 🧠 mcp-nexus-context
 ### *Local Vector Database & Infinite Context Memory*
 
 ![Rust](https://img.shields.io/badge/Built_with-Rust-d33803?style=for-the-badge&logo=rust)
@@ -10,153 +6,115 @@
 ![AI](https://img.shields.io/badge/AI-Local_Inference-green?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
-> **"A Second Brain for your AI Agents, running locally on your GPU."**
+> **"A Second Brain for your AI Agents, running locally."**
 
 ---
 
-## 👨‍💻 Author & Credits
-**Created & Architected by:** [Willer Xavier Reis]  
-**Date:** November 2025  
-**Concept:** High-performance local context expansion using Rust & Vector Embeddings.
+## 👨‍💻 Author
+**Created & Architected by:** Willer Xavier Reis  
+**Date:** November 2025
 
 ---
 
-## 🚀 Overview
+## 🚀 What is mcp-nexus-context?
 
-<<<<<<< HEAD
-**MCP-Nexus-Context** is a specialized **Model Context Protocol (MCP)** server designed to give your AI Assistant (Windsurf, Cursor, Claude) **infinite long-term memory**. 
-=======
-**mcp-nexus-context** is a specialized **Model Context Protocol (MCP)** server designed to give your AI Assistant (Windsurf, Cursor, Claude) **infinite long-term memory**. 
->>>>>>> f30aa6ee78c783e17670f9ee342dfd137c0f89c0
+A specialized **Model Context Protocol (MCP)** server that gives your AI Assistant (Windsurf, Cursor, Claude) **infinite long-term memory**. 
 
-Unlike cloud-based solutions, Nexus runs **100% locally** on your machine. It indexes your conversations, architectural decisions, and code snippets into a vector database, allowing the AI to retrieve relevant context from weeks or months ago instantly.
+Unlike cloud-based solutions, it runs **100% locally** on your machine, indexing conversations, architectural decisions, and code snippets into a vector database for instant semantic retrieval.
 
 ### ✨ Key Features
-- **⚡ Blazing Fast:** Written in **Rust** for near-zero latency.
-- **�️ Real-time Watcher:** Monitors your project files and updates context instantly (Infinite Context).
-- **�🔒 Privacy First:** No data leaves your machine. Embeddings are generated locally.
-- **🧠 SOTA Embeddings:** Uses `BAAI/bge-base-en-v1.5` (BERT architecture) for high-precision semantic search.
-- **🔋 Hybrid Hardware:** Auto-detects CPU or GPU (CUDA) availability (configured for generic compatibility).
-- **💾 Persistence:** Simple, robust JSON-based vector storage (no complex setups required).
-- **🌍 Cross-Platform:** Runs on Windows, Linux, and macOS via Rust Cargo.
+- **⚡ Blazing Fast:** Rust-native with near-zero latency
+- **👁️ Real-time Watcher:** Monitors project files and updates context instantly
+- **🔒 Privacy First:** No data leaves your machine
+- **🧠 SOTA Embeddings:** `BAAI/bge-base-en-v1.5` (BERT) for high-precision semantic search
+- **🔋 CPU/GPU Ready:** Auto-detects hardware (CPU optimized by default)
+- **💾 Simple Storage:** JSON-based persistence (no complex databases)
+- **🌍 Cross-Platform:** Windows, Linux, macOS
 
 ---
 
 ## 🛠️ Installation
 
 ### Prerequisites
-- **Rust Toolchain:** [Install Rust](https://www.rust-lang.org/tools/install)
-- **Python 3.10+:** (Only for initial model download)
+- **Rust:** [Install Rust](https://www.rust-lang.org/tools/install)
+- **Python 3.10+:** (one-time model download only)
 
-### Setup Steps
-1. **Clone the repository:**
-   ```bash
-<<<<<<< HEAD
-   git clone https://github.com/your-repo/mcp-nexus-context.git
-=======
-   git clone https://github.com/willerxar-cmyk/mcp-nexus-context.git
->>>>>>> f30aa6ee78c783e17670f9ee342dfd137c0f89c0
-   cd mcp-nexus-context
-   ```
+### Setup
+```bash
+# 1. Clone the repository
+git clone https://github.com/willerxar-cmyk/mcp-nexus-context.git
+cd mcp-nexus-context
 
-2. **Download the AI Model:**
-   This script fetches the optimized BGE model to your local `data/` folder.
-   ```bash
-   python download_model.py
-   ```
+# 2. Download AI model (~438MB)
+python download_model.py
 
-3. **Build (Optional):**
-   You can compile a binary for maximum performance:
-   ```bash
-   cargo build --release
-   ```
-<<<<<<< HEAD
-   *Binary location:*
-   - **Windows:** `target/release/mcp-nexus-context.exe`
-   - **Linux/Mac:** `target/release/mcp-nexus-context`
-=======
-   *The executable will be at `target/release/mcp-nexus-context.exe`*
->>>>>>> f30aa6ee78c783e17670f9ee342dfd137c0f89c0
+# 3. Build (optional, for binary execution)
+cargo build --release
+```
+
+**Binary locations after build:**
+- **Windows:** `target/release/mcp-nexus-context.exe`
+- **Linux/Mac:** `target/release/mcp-nexus-context`
 
 ---
 
-## ⚙️ Configuration (MCP)
+## ⚙️ Configuration
 
-<<<<<<< HEAD
-To use Nexus with your AI Agent, add this to your **MCP Settings** file (e.g., `mcp_config.json`).
-=======
-To use mcp-nexus-context with your AI Agent, add this to your **MCP Settings** file (e.g., `mcp_config.json` in Windsurf/Cursor):
->>>>>>> f30aa6ee78c783e17670f9ee342dfd137c0f89c0
+Add one of these configurations to your IDE's MCP settings file (`mcp_config.json`):
 
-### Option A: Using Pre-compiled Binary (Faster Startup)
+### Option A: Pre-compiled Binary (Recommended)
 ```json
 {
   "mcpServers": {
     "mcp-nexus-context": {
-<<<<<<< HEAD
-      "command": "C:/Path/To/mcp-nexus-context/target/release/mcp-nexus-context.exe",
-=======
       "command": "C:/ABSOLUTE/PATH/TO/mcp-nexus-context/target/release/mcp-nexus-context.exe",
->>>>>>> f30aa6ee78c783e17670f9ee342dfd137c0f89c0
-      "args": [],
       "env": {
-        "RUST_LOG": "info",
-        "HF_ENDPOINT": "https://huggingface.co"
+        "RUST_LOG": "info"
       },
-      "disabled": false,
       "autoApprove": ["search_context", "add_memory"]
     }
   }
 }
 ```
 
-### Option B: Running from Source (Cross-Platform / Dev)
-Use this if you want to run directly via Cargo on any OS (Linux, Mac, Windows) without manual compilation steps.
-
+### Option B: Run from Source (Cross-Platform)
 ```json
 {
   "mcpServers": {
     "mcp-nexus-context": {
       "command": "cargo",
-      "args": ["run", "--release", "--"],
-      "cwd": "/absolute/path/to/mcp-nexus-context",
+      "args": ["run", "--release"],
+      "cwd": "/ABSOLUTE/PATH/TO/mcp-nexus-context",
       "env": {
-        "RUST_LOG": "info",
-        "HF_ENDPOINT": "https://huggingface.co"
+        "RUST_LOG": "info"
       },
-      "disabled": false,
       "autoApprove": ["search_context", "add_memory"]
     }
   }
 }
 ```
-> **⚠️ Important:** Replace paths with the full path to this project's root folder.
 
 ---
 
----
+## 🤖 AI Agent Instructions
 
-## 🤖 AI Instructions (System Prompt)
-
-Teach your Agent to use mcp-nexus-context by adding this to your **Custom Instructions**:
+Add this to your agent's **Custom Instructions**:
 
 ```markdown
-# mcp-nexus-context PROTOCOL
 You have access to 'mcp-nexus-context', a local vector memory tool.
 
-1. **Retrieval:** ALWAYS call `search_context(query)` before answering questions about history, architecture, or past decisions.
-2. **Memory:** When the user shares important info, call `add_memory(text, metadata)` to save it forever.
+- **Before answering:** Call search_context(query) to retrieve relevant past context.
+- **When learning:** Call add_memory(text, metadata) to save important information.
 ```
 
 ---
 
 ## 🧪 Testing
 
-You can verify the installation using the included Python test script:
 ```bash
 python test_mcp_client.py
 ```
-*Expected Output: Successful initialization, memory addition, and semantic search results.*
+Expected: Successful initialization, memory addition, and semantic search.
 
 ---
 
@@ -164,13 +122,13 @@ python test_mcp_client.py
 
 ```mermaid
 graph TD
-    A[AI Agent / IDE] <-->|JSON-RPC (MCP)| B(mcp-nexus-context Server);
-    B <-->|Inference| C{Embedder Engine};
-    C -->|BGE Model| D[Local GPU/CPU];
-    B <-->|Read/Write| E[(Vector Store JSON)];
-    E -->|Persist| F[Disk Storage];
+    A[AI Agent / IDE] <-->|JSON-RPC| B(mcp-nexus-context);
+    B <-->|Inference| C{Embedder};
+    C -->|BGE Model| D[CPU/GPU];
+    B <-->|R/W| E[(Vector Store)];
+    E -->|JSON| F[Disk];
 ```
 
 ---
 
-*Developed with passion for the future of Local AI.*
+*Made with ❤️ for Local AI - Willer Xavier Reis, 2025*
