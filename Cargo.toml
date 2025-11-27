@@ -1,0 +1,39 @@
+[package]
+name = "nexus-context"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.36", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+anyhow = "1.0"
+futures = "0.3"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+dotenv = "0.15"
+
+# AI / ML
+candle-core = { version = "0.8.0" }
+candle-nn = "0.8.0"
+candle-transformers = "0.8.0"
+hf-hub = "0.3.2"
+tokenizers = "0.19.1"
+
+# Vector DB
+# lancedb removed due to cmake requirement
+# arrow-array removed
+# arrow-schema removed
+
+# File Watcher
+notify = "6.1"
+ignore = "0.4"
+walkdir = "2.5"
+
+# MCP
+# We will implement the protocol manually or use a specific crate if this fails.
+# For now, let's use robust standard libs for JSON-RPC as specific SDKs might be volatile.
+async-trait = "0.1"
+
+[features]
+default = []
