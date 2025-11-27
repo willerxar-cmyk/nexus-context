@@ -2,7 +2,6 @@ use anyhow::{Error as E, Result};
 use candle_core::{DType, Device, Tensor};
 use candle_nn::VarBuilder;
 use candle_transformers::models::bert::{Config as BertConfig, BertModel};
-use hf_hub::{api::sync::ApiBuilder, Repo, RepoType};
 use tokenizers::{PaddingParams, Tokenizer};
 
 pub struct Embedder {

@@ -1,6 +1,6 @@
-# Guia de Uso e Configuração: Nexus-Context MCP
+# Guia de Uso e Configuração: MCP-Nexus-Context
 
-Este documento explica como instalar, configurar e instruir Agentes de IA para utilizar o **Nexus-Context**, seu banco de dados vetorial local acelerado por GPU/CPU.
+Este documento explica como instalar, configurar e instruir Agentes de IA para utilizar o **MCP-Nexus-Context**, seu banco de dados vetorial local acelerado por GPU/CPU.
 
 ## 1. Instalação e Execução
 
@@ -8,18 +8,20 @@ Certifique-se de ter compilado o projeto em modo release:
 ```powershell
 cargo build --release
 ```
-O executável será gerado em: `target/release/nexus-context.exe`
+O executável será gerado em: `target/release/mcp-nexus-context.exe` (Windows) ou `mcp-nexus-context` (Linux/Mac).
 
 ## 2. Configuração no Cliente MCP (IDE)
 
-Para usar este MCP em ferramentas como **Windsurf**, **Cursor**, **Claude Desktop** ou extensões VS Code MCP, adicione a seguinte configuração ao seu arquivo de settings do MCP (geralmente `mcp_config.json` ou nas configurações da extensão):
+Adicione uma das seguintes configurações ao seu arquivo de settings do MCP (geralmente `mcp_config.json`):
 
-### Windows
+### Opção A: Binário Compilado (Recomendado)
+Substitua `c:/Caminho/Para/...` pelo caminho completo onde o projeto foi clonado.
+
 ```json
 {
   "mcpServers": {
-    "nexus-context": {
-      "command": "c:/Users/admin/Documents/MPC-ContextExpander/nexus-context/target/release/nexus-context.exe",
+    "mcp-nexus-context": {
+      "command": "c:/Users/admin/Documents/MPC-ContextExpander/target/release/mcp-nexus-context.exe",
       "args": [],
       "env": {
         "RUST_LOG": "info",
@@ -31,7 +33,27 @@ Para usar este MCP em ferramentas como **Windsurf**, **Cursor**, **Claude Deskto
   }
 }
 ```
-*Nota: Ajuste o caminho absoluto (`c:/Users/...`) conforme a localização real do seu projeto.*
+
+### Opção B: Rodar via Cargo (Cross-Platform)
+Ideal para desenvolvimento ou se você usa Linux/Mac e não quer gerenciar o binário manualmente.
+```json
+{
+  "mcpServers": {
+    "mcp-nexus-context": {
+      "command": "cargo",
+      "args": ["run", "--release", "--"],
+      "cwd": "/caminho/absoluto/para/mcp-nexus-context",
+      "env": {
+        "RUST_LOG": "info",
+        "HF_ENDPOINT": "https://huggingface.co"
+      },
+      "disabled": false,
+      "autoApprove": ["search_context", "add_memory"]
+    }
+  }
+}
+```
+*Nota: Ajuste o caminho absoluto (`c:/Users/...`) se necessário.*
 
 ## 3. Instruções para o Agente (System Prompt)
 

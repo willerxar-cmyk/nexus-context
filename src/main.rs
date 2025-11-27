@@ -1,11 +1,11 @@
 use anyhow::Result;
-use nexus_context::db::VectorDB;
-use nexus_context::embeddings::Embedder;
-use nexus_context::watcher;
+use mcp_nexus_context::db::VectorDB;
+use mcp_nexus_context::embeddings::Embedder;
+use mcp_nexus_context::watcher::FileWatcher;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::io::{self, BufRead};
-use tokio::sync::Mutex;
+use tokio::sync::{mpsc, Mutex};
 use std::sync::Arc;
 
 #[derive(Serialize, Deserialize)]
@@ -39,6 +39,25 @@ async fn main() -> Result<()> {
         embedder: Mutex::new(embedder),
     });
 
+    // Start File Watcher
+    let (tx, mut rx) = mpsc::channel(100);
+    // Watch the current directory (or configure specific paths)
+    // Warning: Watching root might be noisy. Ideally user configures this.
+    // For now, let's watch a 'src' or 'docs' folder if it exists, or just log.
+    // We'll spawn the watcher but keep it simple.
+    let _watcher = FileWatcher::new(".".to_string(), tx);
+    
+    // Spawn watcher consumer
+    let _state_clone = app_state.clone();
+    tokio::spawn(async move {
+        while let Some(path) = rx.recv().await {
+            eprintln!("File changed: {}", path);
+            // TODO: Debounce and re-index file content here
+            // In a real scenario, we would read the file, chunk it, embed it, and update DB.
+            // For this MVP, we just log it to stderr to show it works.
+        }
+    });
+
     // MCP Loop (Stdio)
     let stdin = io::stdin();
     for line in stdin.lock().lines() {
@@ -63,7 +82,7 @@ async fn handle_request(req: JsonRpcRequest, state: Arc<AppState>) -> Result<()>
                     "tools": {}
                 },
                 "serverInfo": {
-                    "name": "nexus-context",
+                    "name": "mcp-nexus-context",
                     "version": "0.1.0"
                 }
             })

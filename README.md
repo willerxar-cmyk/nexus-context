@@ -1,4 +1,4 @@
-# 🧠 Nexus-Context MCP
+# 🧠 MCP-Nexus-Context
 ### *Local Vector Database & Infinite Context Memory*
 
 ![Rust](https://img.shields.io/badge/Built_with-Rust-d33803?style=for-the-badge&logo=rust)
@@ -19,16 +19,18 @@
 
 ## 🚀 Overview
 
-**Nexus-Context** is a specialized **Model Context Protocol (MCP)** server designed to give your AI Assistant (Windsurf, Cursor, Claude) **infinite long-term memory**. 
+**MCP-Nexus-Context** is a specialized **Model Context Protocol (MCP)** server designed to give your AI Assistant (Windsurf, Cursor, Claude) **infinite long-term memory**. 
 
 Unlike cloud-based solutions, Nexus runs **100% locally** on your machine. It indexes your conversations, architectural decisions, and code snippets into a vector database, allowing the AI to retrieve relevant context from weeks or months ago instantly.
 
 ### ✨ Key Features
 - **⚡ Blazing Fast:** Written in **Rust** for near-zero latency.
-- **🔒 Privacy First:** No data leaves your machine. Embeddings are generated locally.
+- **�️ Real-time Watcher:** Monitors your project files and updates context instantly (Infinite Context).
+- **�🔒 Privacy First:** No data leaves your machine. Embeddings are generated locally.
 - **🧠 SOTA Embeddings:** Uses `BAAI/bge-base-en-v1.5` (BERT architecture) for high-precision semantic search.
 - **🔋 Hybrid Hardware:** Auto-detects CPU or GPU (CUDA) availability (configured for generic compatibility).
 - **💾 Persistence:** Simple, robust JSON-based vector storage (no complex setups required).
+- **🌍 Cross-Platform:** Runs on Windows, Linux, and macOS via Rust Cargo.
 
 ---
 
@@ -38,11 +40,11 @@ Unlike cloud-based solutions, Nexus runs **100% locally** on your machine. It in
 - **Rust Toolchain:** [Install Rust](https://www.rust-lang.org/tools/install)
 - **Python 3.10+:** (Only for initial model download)
 
-### Build Steps
+### Setup Steps
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-repo/nexus-context.git
-   cd nexus-context
+   git clone https://github.com/your-repo/mcp-nexus-context.git
+   cd mcp-nexus-context
    ```
 
 2. **Download the AI Model:**
@@ -51,23 +53,27 @@ Unlike cloud-based solutions, Nexus runs **100% locally** on your machine. It in
    python download_model.py
    ```
 
-3. **Compile in Release Mode:**
+3. **Build (Optional):**
+   You can compile a binary for maximum performance:
    ```bash
    cargo build --release
    ```
-   *The executable will be at `target/release/nexus-context.exe`*
+   *Binary location:*
+   - **Windows:** `target/release/mcp-nexus-context.exe`
+   - **Linux/Mac:** `target/release/mcp-nexus-context`
 
 ---
 
 ## ⚙️ Configuration (MCP)
 
-To use Nexus-Context with your AI Agent, add this to your **MCP Settings** file (e.g., `mcp_config.json` in Windsurf/Cursor):
+To use Nexus with your AI Agent, add this to your **MCP Settings** file (e.g., `mcp_config.json`).
 
+### Option A: Using Pre-compiled Binary (Faster Startup)
 ```json
 {
   "mcpServers": {
-    "nexus-context": {
-      "command": "C:/ABSOLUTE/PATH/TO/nexus-context/target/release/nexus-context.exe",
+    "mcp-nexus-context": {
+      "command": "C:/Path/To/mcp-nexus-context/target/release/mcp-nexus-context.exe",
       "args": [],
       "env": {
         "RUST_LOG": "info",
@@ -79,7 +85,30 @@ To use Nexus-Context with your AI Agent, add this to your **MCP Settings** file 
   }
 }
 ```
-> **⚠️ Important:** Replace `C:/ABSOLUTE/PATH/TO/...` with the actual path on your system.
+
+### Option B: Running from Source (Cross-Platform / Dev)
+Use this if you want to run directly via Cargo on any OS (Linux, Mac, Windows) without manual compilation steps.
+
+```json
+{
+  "mcpServers": {
+    "mcp-nexus-context": {
+      "command": "cargo",
+      "args": ["run", "--release", "--"],
+      "cwd": "/absolute/path/to/mcp-nexus-context",
+      "env": {
+        "RUST_LOG": "info",
+        "HF_ENDPOINT": "https://huggingface.co"
+      },
+      "disabled": false,
+      "autoApprove": ["search_context", "add_memory"]
+    }
+  }
+}
+```
+> **⚠️ Important:** Replace paths with the full path to this project's root folder.
+
+---
 
 ---
 

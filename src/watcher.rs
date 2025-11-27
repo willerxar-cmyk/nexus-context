@@ -4,7 +4,7 @@ use std::sync::Arc;
 use tokio::sync::mpsc::Sender;
 
 pub struct FileWatcher {
-    watcher: RecommendedWatcher,
+    _watcher: RecommendedWatcher,
 }
 
 impl FileWatcher {
@@ -34,6 +34,6 @@ impl FileWatcher {
 
         watcher.watch(Path::new(&path), RecursiveMode::Recursive)?;
 
-        Ok(Self { watcher })
+        Ok(Self { _watcher: watcher })
     }
 }

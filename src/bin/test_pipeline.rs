@@ -1,6 +1,6 @@
 use anyhow::Result;
-use nexus_context::db::VectorDB;
-use nexus_context::embeddings::Embedder;
+use mcp_nexus_context::db::VectorDB;
+use mcp_nexus_context::embeddings::Embedder;
 
 #[tokio::main]
 async fn main() -> Result<()> {

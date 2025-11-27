@@ -1275,6 +1275,29 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "670fdfda89751bc4a84ac13eaa63e205cf0fd22b4c9a5fbfa085b63c1f1d3a30"
 
 [[package]]
+name = "mcp-nexus-context"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "candle-core",
+ "candle-nn",
+ "candle-transformers",
+ "dotenv",
+ "futures",
+ "hf-hub",
+ "ignore",
+ "notify",
+ "serde",
+ "serde_json",
+ "tokenizers",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+ "walkdir",
+]
+
+[[package]]
 name = "memchr"
 version = "2.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1366,29 +1389,6 @@ dependencies = [
  "security-framework",
  "security-framework-sys",
  "tempfile",
-]
-
-[[package]]
-name = "nexus-context"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-trait",
- "candle-core",
- "candle-nn",
- "candle-transformers",
- "dotenv",
- "futures",
- "hf-hub",
- "ignore",
- "notify",
- "serde",
- "serde_json",
- "tokenizers",
- "tokio",
- "tracing",
- "tracing-subscriber",
- "walkdir",
 ]
 
 [[package]]
