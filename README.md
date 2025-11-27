@@ -1,4 +1,4 @@
-# 🧠 Nexus-Context MCP
+# 🧠 mcp-nexus-context MCP
 ### *Local Vector Database & Infinite Context Memory*
 
 ![Rust](https://img.shields.io/badge/Built_with-Rust-d33803?style=for-the-badge&logo=rust)
@@ -19,7 +19,7 @@
 
 ## 🚀 Overview
 
-**Nexus-Context** is a specialized **Model Context Protocol (MCP)** server designed to give your AI Assistant (Windsurf, Cursor, Claude) **infinite long-term memory**. 
+**mcp-nexus-context** is a specialized **Model Context Protocol (MCP)** server designed to give your AI Assistant (Windsurf, Cursor, Claude) **infinite long-term memory**. 
 
 Unlike cloud-based solutions, Nexus runs **100% locally** on your machine. It indexes your conversations, architectural decisions, and code snippets into a vector database, allowing the AI to retrieve relevant context from weeks or months ago instantly.
 
@@ -41,8 +41,8 @@ Unlike cloud-based solutions, Nexus runs **100% locally** on your machine. It in
 ### Build Steps
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-repo/nexus-context.git
-   cd nexus-context
+   git clone https://github.com/willerxar-cmyk/mcp-nexus-context.git
+   cd mcp-nexus-context
    ```
 
 2. **Download the AI Model:**
@@ -55,19 +55,19 @@ Unlike cloud-based solutions, Nexus runs **100% locally** on your machine. It in
    ```bash
    cargo build --release
    ```
-   *The executable will be at `target/release/nexus-context.exe`*
+   *The executable will be at `target/release/mcp-nexus-context.exe`*
 
 ---
 
 ## ⚙️ Configuration (MCP)
 
-To use Nexus-Context with your AI Agent, add this to your **MCP Settings** file (e.g., `mcp_config.json` in Windsurf/Cursor):
+To use mcp-nexus-context with your AI Agent, add this to your **MCP Settings** file (e.g., `mcp_config.json` in Windsurf/Cursor):
 
 ```json
 {
   "mcpServers": {
-    "nexus-context": {
-      "command": "C:/ABSOLUTE/PATH/TO/nexus-context/target/release/nexus-context.exe",
+    "mcp-nexus-context": {
+      "command": "C:/ABSOLUTE/PATH/TO/mcp-nexus-context/target/release/mcp-nexus-context.exe",
       "args": [],
       "env": {
         "RUST_LOG": "info",
@@ -85,11 +85,11 @@ To use Nexus-Context with your AI Agent, add this to your **MCP Settings** file 
 
 ## 🤖 AI Instructions (System Prompt)
 
-Teach your Agent to use Nexus-Context by adding this to your **Custom Instructions**:
+Teach your Agent to use mcp-nexus-context by adding this to your **Custom Instructions**:
 
 ```markdown
-# NEXUS-CONTEXT PROTOCOL
-You have access to 'nexus-context', a local vector memory tool.
+# mcp-nexus-context PROTOCOL
+You have access to 'mcp-nexus-context', a local vector memory tool.
 
 1. **Retrieval:** ALWAYS call `search_context(query)` before answering questions about history, architecture, or past decisions.
 2. **Memory:** When the user shares important info, call `add_memory(text, metadata)` to save it forever.
@@ -111,7 +111,7 @@ python test_mcp_client.py
 
 ```mermaid
 graph TD
-    A[AI Agent / IDE] <-->|JSON-RPC (MCP)| B(Nexus-Context Server);
+    A[AI Agent / IDE] <-->|JSON-RPC (MCP)| B(mcp-nexus-context Server);
     B <-->|Inference| C{Embedder Engine};
     C -->|BGE Model| D[Local GPU/CPU];
     B <-->|Read/Write| E[(Vector Store JSON)];
